@@ -1,0 +1,15 @@
+{
+  "name": "stackpicker",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@openrouter/ai-sdk-provider": "^2.9.0",
+    "ai": "^6.0.191"
+  }
+}
