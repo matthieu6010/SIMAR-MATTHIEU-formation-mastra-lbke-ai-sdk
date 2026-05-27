@@ -51,7 +51,8 @@ const result = streamText({
   },
   stopWhen: stepCountIs(5),
   toolChoice: "auto",
-  prompt: "What is the first model of openAI",
+  //  prompt: "What is the first model of openAI",
+  prompt: "What is the last model of openAI",
 });
 
 // Affiche le flux complet (chaque événement : appel d'outil,

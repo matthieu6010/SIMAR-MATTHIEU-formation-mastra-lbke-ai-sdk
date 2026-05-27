@@ -183,32 +183,23 @@ const model = openrouter("mistralai/codestral-2508");
 // ============================================================
 const { partialOutputStream } = streamText({
   model,
+  // test de plantage en limitant Output
   // maxOutputTokens: 30,
   system:
     "You are Stackpicker, a chatbot expert in selecting technological stacks for software engineering projects.",
   output: Output.array({
-    element: z.discriminatedUnion("category", [
-      z.object({
-        category: z.literal("framework"),
-        name: z.string().describe("The name of the framework"),
-        language: z
-          .string()
-          .describe("The main programming language used by the framework"),
-      }),
-      z.object({
-        category: z.literal("service"),
-        name: z.string().describe("The name of the service"),
-        provider: z
-          .string()
-          .describe("The company providing the service (e.g. OpenAI, AWS)"),
-        pricing: z
-          .enum(["free", "paid", "freemium"])
-          .describe("The pricing model of the service"),
-      }),
-    ]),
+    element: z.object({
+      technology: z.string().describe("The name of the technology"),
+      description: z
+        .string()
+        .describe("A short description of what the technology does"),
+      url: z.string().describe("The official website or documentation URL"),
+      language: z
+        .string()
+        .describe("The main programming language used by the technology"),
+    }),
   }),
-  prompt:
-    "List 5 tools for LLM development, mixing open-source frameworks and cloud services.",
+  prompt: "What are the technologies for LLM development similar to LangChain?",
 });
 
 for await (const partial of partialOutputStream) {
