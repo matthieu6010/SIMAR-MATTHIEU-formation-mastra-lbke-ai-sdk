@@ -14,6 +14,21 @@ export const mastra = new Mastra({
   workflows: { weatherWorkflow },
   agents: { weatherAgent, stackpickerAgent },
   scorers: { toolCallAppropriatenessScorer, completenessScorer, translationScorer },
+  server: {
+    middleware: [
+      async (context, next) => {
+        const requestContext = context.get('requestContext');
+        const cookies = context.req.header('Cookie');
+        // Improve by adding a real cookie parser here + payment check
+        if (cookies?.match('paid-user')) {
+          requestContext.set('paid-user', true);
+        } else {
+          requestContext.set('paid-user', false);
+        }
+        await next();
+      },
+    ],
+  },
   storage: new MastraCompositeStore({
     id: 'composite-storage',
     default: new LibSQLStore({
