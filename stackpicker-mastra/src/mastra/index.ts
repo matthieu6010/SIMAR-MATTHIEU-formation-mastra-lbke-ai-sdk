@@ -8,6 +8,7 @@ import { Observability, MastraStorageExporter, MastraPlatformExporter, Sensitive
 import { weatherWorkflow } from './workflows/weather-workflow';
 import { weatherAgent } from './agents/weather-agent';
 import { stackpickerAgent } from './agents/stackpicker-agent';
+import { paidUserMiddleware } from './middlewares/paid-user';
 import { toolCallAppropriatenessScorer, completenessScorer, translationScorer } from './scorers/weather-scorer';
 
 export const mastra = new Mastra({
@@ -15,19 +16,7 @@ export const mastra = new Mastra({
   agents: { weatherAgent, stackpickerAgent },
   scorers: { toolCallAppropriatenessScorer, completenessScorer, translationScorer },
   server: {
-    middleware: [
-      async (context, next) => {
-        const requestContext = context.get('requestContext');
-        const cookies = context.req.header('Cookie');
-        // Improve by adding a real cookie parser here + payment check
-        if (cookies?.match('paid-user')) {
-          requestContext.set('paid-user', true);
-        } else {
-          requestContext.set('paid-user', false);
-        }
-        await next();
-      },
-    ],
+    middleware: [paidUserMiddleware],
   },
   storage: new MastraCompositeStore({
     id: 'composite-storage',
