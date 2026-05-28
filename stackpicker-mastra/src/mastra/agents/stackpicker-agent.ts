@@ -1,5 +1,15 @@
 import { Agent } from '@mastra/core/agent';
 import { Memory } from '@mastra/memory';
+import { z } from 'zod';
+
+const workingMemorySchema = z.object({
+  projectName: z.string().optional().describe("The user's project name or codename"),
+  projectGoal: z.string().optional().describe("The project's goal, target audience, or use case"),
+  preferredLanguage: z.string().optional().describe('The programming language the user prefers'),
+  refusedTechnologies: z.array(z.string()).optional().describe('Technologies the user explicitly refuses or wants to avoid'),
+  acceptedTechnologies: z.array(z.string()).optional().describe('Technologies the user accepts, considers, or has decided to use'),
+  competitors: z.array(z.string()).optional().describe('Competitors or similar products the user references'),
+});
 import { tavilySearchTool, tavilyExtractTool } from '../tools/tavily-tool';
 import { checkTechExistsTool } from '../tools/stackpicker-tool';
 import { wikipediaChecker } from '../tools/wikipedia-tool';
@@ -70,16 +80,7 @@ WORKING MEMORY RULES — apply on EVERY user message, BEFORE answering the user'
     options: {
       workingMemory: {
         enabled: true,
-        template: `# User's project
-- **Name**:
-- **Goal**:
-
-# Technological choices
-- **Preferred language**:
-- **Refused technologies**:
-- **Accepted technologies**:
-- **Competitor**:
-`,
+        schema: workingMemorySchema,
       },
     },
   }),

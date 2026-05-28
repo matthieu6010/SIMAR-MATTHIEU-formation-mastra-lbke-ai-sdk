@@ -47,10 +47,18 @@ db.all(sql, (err, rows) => {
     }
     try {
       const parsed = JSON.parse(row.metaText);
-      if (parsed.workingMemory) {
-        console.log(parsed.workingMemory);
+      const wm = parsed.workingMemory;
+      if (wm == null) {
+        console.log('  metadata:', JSON.stringify(parsed, null, 2));
+      } else if (typeof wm === 'string') {
+        // Try to parse inner JSON (schema mode may stringify); fallback to raw (markdown mode)
+        try {
+          console.log(JSON.stringify(JSON.parse(wm), null, 2));
+        } catch {
+          console.log(wm);
+        }
       } else {
-        console.log('  metadata:', parsed);
+        console.log(JSON.stringify(wm, null, 2));
       }
     } catch {
       console.log('  raw:', row.metaText);
