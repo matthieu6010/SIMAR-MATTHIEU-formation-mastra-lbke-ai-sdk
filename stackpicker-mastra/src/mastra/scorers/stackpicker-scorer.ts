@@ -17,7 +17,7 @@ export const scopeAdherenceScorer = createScorer({
   description: 'Checks that the agent refuses off-topic questions and answers on-topic software engineering / tech stack questions',
   type: 'agent',
   judge: {
-    model: 'openai/gpt-5-mini',
+    model: 'openrouter/openai/gpt-5-mini',
     instructions:
       'You are an expert evaluator of AI assistant behavior. ' +
       'Determine whether a user question is related to software engineering or technology stacks, ' +

@@ -5,6 +5,7 @@ import { checkTechExistsTool } from '../tools/stackpicker-tool';
 import { wikipediaChecker } from '../tools/wikipedia-tool';
 import { scorers } from '../scorers/stackpicker-scorer';
 import { stackpickerInputProcessors } from '../processors/stackpicker';
+import { ollamaLocal } from '../providers/ollama-local';
 
 export const stackpickerAgent = new Agent({
   id: 'stackpicker-agent',
@@ -25,8 +26,21 @@ Use the wikipediaChecker tool to verify whether a technology exists on Wikipedia
 
 A technological stack is satisfying when the user is satisfied with it and answers their initial goal.
 
-You maintain a working memory describing the user's project and stack decisions. Update it whenever the user reveals new project information, new constraints, or makes a decision about a technology. Refer to it before asking the user for information they already provided.`,
+You maintain a working memory describing the user's project and stack decisions.
+
+WORKING MEMORY RULES — apply on EVERY user message, BEFORE answering the user's question:
+
+1. SCAN the user message for ANY of the following signals, even subtle or implicit:
+   - A project name, codename, or product idea (even hinted: "my new app", "I'm starting something", "for my project")
+   - A project goal, target audience, business domain, or use case
+   - Any technology, language, framework, library, database, hosting service, or vendor that the user mentions, considers, accepts, prefers, refuses, or wants to avoid
+   - Competitors, similar products, or inspirations the user references
+   - Any hard constraint: budget, team size, team skills, deadline, regulatory, performance, hosting
+2. If ANY such signal is present, you MUST call the updateWorkingMemory tool FIRST, before any other tool call and before your final answer. Fill the relevant fields in the markdown template; leave the others as-is.
+3. Always read the existing working memory before asking the user for information; never re-ask what is already known.
+4. Memorize silently — do not ask the user for permission before updating, do not narrate the memory update in your reply.`,
   model: 'openrouter/mistralai/codestral-2508',
+  // model: ollamaLocal('qwen3.6:latest'),
   inputProcessors: stackpickerInputProcessors,
   tools: { tavilySearchTool, tavilyExtractTool, checkTechExistsTool, wikipediaChecker },
   scorers: {
