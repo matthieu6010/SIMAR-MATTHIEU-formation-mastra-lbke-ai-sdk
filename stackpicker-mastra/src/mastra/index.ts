@@ -6,6 +6,7 @@ import { DuckDBStore } from "@mastra/duckdb";
 import { MastraCompositeStore } from '@mastra/core/storage';
 import { Observability, MastraStorageExporter, MastraPlatformExporter, SensitiveDataFilter } from '@mastra/observability';
 import { weatherWorkflow } from './workflows/weather-workflow';
+import { echoWorkflow } from './workflows/echo-workflow';
 import { weatherAgent } from './agents/weather-agent';
 import { stackpickerAgent } from './agents/stackpicker-agent';
 import { summarizerAgent } from './agents/summarizer-agent';
@@ -14,7 +15,7 @@ import { paidUserMiddleware } from './middlewares/paid-user';
 import { toolCallAppropriatenessScorer, completenessScorer, translationScorer } from './scorers/weather-scorer';
 
 export const mastra = new Mastra({
-  workflows: { weatherWorkflow },
+  workflows: { weatherWorkflow, echoWorkflow },
   agents: { weatherAgent, stackpickerAgent, summarizerAgent, glpiAgent },
   scorers: { toolCallAppropriatenessScorer, completenessScorer, translationScorer },
   server: {
