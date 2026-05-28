@@ -1,5 +1,6 @@
 import { Agent } from '@mastra/core/agent';
 import { Memory } from '@mastra/memory';
+import { LibSQLVector } from '@mastra/libsql';
 import { z } from 'zod';
 
 const workingMemorySchema = z.object({
@@ -16,6 +17,7 @@ import { wikipediaChecker } from '../tools/wikipedia-tool';
 import { scorers } from '../scorers/stackpicker-scorer';
 import { stackpickerInputProcessors } from '../processors/stackpicker';
 import { ollamaLocal } from '../providers/ollama-local';
+import { ollamaEmbedder } from '../providers/ollama-embedder';
 
 export const stackpickerAgent = new Agent({
   id: 'stackpicker-agent',
@@ -77,10 +79,19 @@ WORKING MEMORY RULES — apply on EVERY user message, BEFORE answering the user'
     },
   },
   memory: new Memory({
+    vector: new LibSQLVector({
+      id: 'stackpicker-vector',
+      url: 'file:./mastra.db',
+    }),
+    embedder: ollamaEmbedder('bge-m3:latest'),
     options: {
       workingMemory: {
         enabled: true,
         schema: workingMemorySchema,
+      },
+      semanticRecall: {
+        topK: 5,
+        messageRange: { before: 3, after: 2 },
       },
     },
   }),
