@@ -5,7 +5,6 @@ import { checkTechExistsTool } from '../tools/stackpicker-tool';
 import { wikipediaChecker } from '../tools/wikipedia-tool';
 import { scorers } from '../scorers/stackpicker-scorer';
 import { stackpickerInputProcessors } from '../processors/stackpicker';
-import { ollamaLocal } from '../providers/ollama-local';
 
 export const stackpickerAgent = new Agent({
   id: 'stackpicker-agent',
@@ -24,8 +23,10 @@ You won't answer questions unrelated to software engineering or technology stack
 
 Use the wikipediaChecker tool to verify whether a technology exists on Wikipedia before recommending it.
 
-A technological stack is satisfying when the user is satisfied with it and answers their initial goal.`,
-  model: ollamaLocal('qwen3.6:latest'),
+A technological stack is satisfying when the user is satisfied with it and answers their initial goal.
+
+You maintain a working memory describing the user's project and stack decisions. Update it whenever the user reveals new project information, new constraints, or makes a decision about a technology. Refer to it before asking the user for information they already provided.`,
+  model: 'openrouter/mistralai/codestral-2508',
   inputProcessors: stackpickerInputProcessors,
   tools: { tavilySearchTool, tavilyExtractTool, checkTechExistsTool, wikipediaChecker },
   scorers: {
@@ -51,5 +52,21 @@ A technological stack is satisfying when the user is satisfied with it and answe
       },
     },
   },
-  memory: new Memory(),
+  memory: new Memory({
+    options: {
+      workingMemory: {
+        enabled: true,
+        template: `# User's project
+- **Name**:
+- **Goal**:
+
+# Technological choices
+- **Preferred language**:
+- **Refused technologies**:
+- **Accepted technologies**:
+- **Competitor**:
+`,
+      },
+    },
+  }),
 });
