@@ -4,6 +4,7 @@ import { tavilySearchTool, tavilyExtractTool } from '../tools/tavily-tool';
 import { checkTechExistsTool } from '../tools/stackpicker-tool';
 import { wikipediaChecker } from '../tools/wikipedia-tool';
 import { scorers } from '../scorers/stackpicker-scorer';
+import { stackpickerInputProcessors } from '../processors/stackpicker';
 
 export const stackpickerAgent = new Agent({
   id: 'stackpicker-agent',
@@ -24,6 +25,7 @@ Use the wikipediaChecker tool to verify whether a technology exists on Wikipedia
 
 A technological stack is satisfying when the user is satisfied with it and answers their initial goal.`,
   model: 'openrouter/mistralai/codestral-2508',
+  inputProcessors: stackpickerInputProcessors,
   tools: { tavilySearchTool, tavilyExtractTool, checkTechExistsTool, wikipediaChecker },
   scorers: {
     toolCallAppropriateness: {
