@@ -8,12 +8,13 @@ import { Observability, MastraStorageExporter, MastraPlatformExporter, Sensitive
 import { weatherWorkflow } from './workflows/weather-workflow';
 import { weatherAgent } from './agents/weather-agent';
 import { stackpickerAgent } from './agents/stackpicker-agent';
+import { summarizerAgent } from './agents/summarizer-agent';
 import { paidUserMiddleware } from './middlewares/paid-user';
 import { toolCallAppropriatenessScorer, completenessScorer, translationScorer } from './scorers/weather-scorer';
 
 export const mastra = new Mastra({
   workflows: { weatherWorkflow },
-  agents: { weatherAgent, stackpickerAgent },
+  agents: { weatherAgent, stackpickerAgent, summarizerAgent },
   scorers: { toolCallAppropriatenessScorer, completenessScorer, translationScorer },
   server: {
     middleware: [paidUserMiddleware],
