@@ -24,7 +24,10 @@ You won't answer questions unrelated to software engineering or technology stack
 Use the wikipediaChecker tool to verify whether a technology exists on Wikipedia before recommending it.
 
 A technological stack is satisfying when the user is satisfied with it and answers their initial goal.`,
-  model: 'openrouter/mistralai/codestral-2508',
+  model: {
+    id: 'ollama/qwen3.6:latest',
+    url: 'http://your-ollama-host:11434/v1',
+  },
   inputProcessors: stackpickerInputProcessors,
   tools: { tavilySearchTool, tavilyExtractTool, checkTechExistsTool, wikipediaChecker },
   scorers: {
