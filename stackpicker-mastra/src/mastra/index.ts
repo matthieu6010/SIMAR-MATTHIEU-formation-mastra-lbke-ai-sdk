@@ -9,12 +9,13 @@ import { weatherWorkflow } from './workflows/weather-workflow';
 import { weatherAgent } from './agents/weather-agent';
 import { stackpickerAgent } from './agents/stackpicker-agent';
 import { summarizerAgent } from './agents/summarizer-agent';
+import { glpiAgent } from './agents/glpi-agent';
 import { paidUserMiddleware } from './middlewares/paid-user';
 import { toolCallAppropriatenessScorer, completenessScorer, translationScorer } from './scorers/weather-scorer';
 
 export const mastra = new Mastra({
   workflows: { weatherWorkflow },
-  agents: { weatherAgent, stackpickerAgent, summarizerAgent },
+  agents: { weatherAgent, stackpickerAgent, summarizerAgent, glpiAgent },
   scorers: { toolCallAppropriatenessScorer, completenessScorer, translationScorer },
   server: {
     middleware: [paidUserMiddleware],
