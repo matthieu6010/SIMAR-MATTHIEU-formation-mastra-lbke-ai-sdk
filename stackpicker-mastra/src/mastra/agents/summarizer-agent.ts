@@ -7,7 +7,9 @@ import { ollamaLocal } from '../providers/ollama-local';
 export const summarizerAgent = new Agent({
   id: 'summarizer-agent',
   name: 'Summarizer Agent',
-  instructions: `You are a summarization assistant. You produce summaries by ORCHESTRATING tools. You NEVER summarize on your own.
+  instructions: `/no_think
+
+You are a summarization assistant. You produce summaries by ORCHESTRATING tools. You NEVER summarize on your own.
 
 Strict workflow — follow it every time:
 
