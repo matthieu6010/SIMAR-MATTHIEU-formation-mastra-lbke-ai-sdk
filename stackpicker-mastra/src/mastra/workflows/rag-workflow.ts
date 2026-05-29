@@ -92,6 +92,8 @@ ${JSON.stringify(inputData.items, null, 2)}`;
 
 export const ragWorkflow = createWorkflow({
   id: "rag-workflow",
+  description:
+    "Answers questions using the ingested Mastra documentation (RAG): retrieves the most relevant documentation chunks from Chroma and synthesizes an answer. Input is an array of questions.",
   inputSchema: z.array(z.string()),
   outputSchema: z.object({ answer: z.string() }),
 })

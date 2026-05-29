@@ -19,6 +19,7 @@ import { scorers } from '../scorers/stackpicker-scorer';
 import { stackpickerInputProcessors } from '../processors/stackpicker';
 import { ollamaLocal } from '../providers/ollama-local';
 import { ollamaEmbedder } from '../providers/ollama-embedder';
+import { ragWorkflow } from '../workflows/rag-workflow';
 
 export const stackpickerAgent = new Agent({
   id: 'stackpicker-agent',
@@ -62,6 +63,7 @@ WORKING MEMORY RULES — apply on EVERY user message, BEFORE answering the user'
   // model: ollamaLocal('qwen3.6:latest'),
   inputProcessors: stackpickerInputProcessors,
   tools: { tavilySearchTool, tavilyExtractTool, checkTechExistsTool, wikipediaChecker },
+  workflows: { ragWorkflow },
   scorers: {
     toolCallAppropriateness: {
       scorer: scorers.toolCallAppropriatenessScorer,
