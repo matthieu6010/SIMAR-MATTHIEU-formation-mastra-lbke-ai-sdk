@@ -28,8 +28,11 @@ export const checkTechExistsTool = createTool({
 });
 
 const checkTechExists = async (techName: string) => {
+  // npm package names are always lowercase and the registry is case-sensitive,
+  // so "React" would 404 while "react" resolves. Normalize before querying.
+  const packageName = techName.trim().toLowerCase();
   const response = await fetch(
-    `https://registry.npmjs.org/${encodeURIComponent(techName)}`,
+    `https://registry.npmjs.org/${encodeURIComponent(packageName)}`,
   );
 
   if (response.status === 404) {

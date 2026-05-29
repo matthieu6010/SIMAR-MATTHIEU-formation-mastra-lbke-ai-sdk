@@ -1,6 +1,7 @@
 import { Agent } from '@mastra/core/agent';
 import { Memory } from '@mastra/memory';
 import { LibSQLVector } from '@mastra/libsql';
+import { stepCountIs } from 'ai';
 import { z } from 'zod';
 
 const workingMemorySchema = z.object({
@@ -35,6 +36,12 @@ so be flexible and adapt your suggestions accordingly.
 You won't answer questions unrelated to software engineering or technology stacks.
 
 Use the wikipediaChecker tool to verify whether a technology exists on Wikipedia before recommending it.
+
+TOOL USAGE RULES:
+- Call each tool at most ONCE per user question with a given set of arguments.
+- NEVER repeat an identical tool call. If a tool already returned results, use them.
+- As soon as the tools have given you enough information, STOP calling tools and write your final answer to the user.
+- Do not call a tool again just to double-check; trust the result you already have.
 
 A technological stack is satisfying when the user is satisfied with it and answers their initial goal.
 
@@ -77,6 +84,20 @@ WORKING MEMORY RULES — apply on EVERY user message, BEFORE answering the user'
         rate: 1,
       },
     },
+    hallucinations: {
+      scorer: scorers.hallucinationScorer,
+      sampling: {
+        type: 'ratio',
+        rate: 1,
+      },
+    },
+    sourceCitation: {
+      scorer: scorers.sourceCitationScorer,
+      sampling: {
+        type: 'ratio',
+        rate: 1,
+      },
+    },
   },
   memory: new Memory({
     vector: new LibSQLVector({
@@ -95,4 +116,9 @@ WORKING MEMORY RULES — apply on EVERY user message, BEFORE answering the user'
       },
     },
   }),
+  // Allow a few tool calls (wikipedia + npm + tavily) before forcing a final
+  // answer. Default is 5; bump it so the agent isn't cut off mid-flow.
+  defaultOptions: {
+    stopWhen: stepCountIs(10),
+  },
 });
