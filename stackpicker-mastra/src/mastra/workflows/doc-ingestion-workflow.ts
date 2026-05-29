@@ -2,14 +2,16 @@ import { createStep, createWorkflow } from "@mastra/core/workflows";
 import { openrouter } from "@openrouter/ai-sdk-provider";
 import { MDocument } from "@mastra/rag";
 import { embedMany } from "ai";
-
-// OpenRouter embedding model (reads OPENROUTER_API_KEY from env).
-const embeddingModel = openrouter.textEmbeddingModel("mistralai/mistral-embed-2312");
 import { load } from "cheerio";
 import TurndownService from "turndown";
 import { nanoid } from "nanoid";
 import { z } from "zod";
 import { getChromaClient, RAG_COLLECTION_NAME } from "../rag/chroma";
+
+// OpenRouter embedding model (reads OPENROUTER_API_KEY from env).
+const embeddingModel = openrouter.textEmbeddingModel(
+  "mistralai/mistral-embed-2312",
+);
 
 const chunkSchema = z.object({
   text: z.string(),
