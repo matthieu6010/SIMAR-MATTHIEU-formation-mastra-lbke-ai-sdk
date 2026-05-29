@@ -81,7 +81,7 @@ WORKING MEMORY RULES — apply on EVERY user message, BEFORE answering the user'
   memory: new Memory({
     vector: new LibSQLVector({
       id: 'stackpicker-vector',
-      url: 'file:./mastra.db',
+      url: process.env.MASTRA_DB_URL ?? 'file:./mastra.db',
     }),
     embedder: ollamaEmbedder('bge-m3:latest'),
     options: {

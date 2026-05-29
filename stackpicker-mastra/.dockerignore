@@ -1,7 +1,6 @@
-output.txt
 node_modules
-dist
 .mastra
+.git
 .env
 .env.*
 !.env.example
@@ -9,5 +8,9 @@ dist
 *.db-*
 *.duckdb
 *.duckdb.wal
+dist
+output.txt
+logs
+scripts
 .netlify
 .vercel

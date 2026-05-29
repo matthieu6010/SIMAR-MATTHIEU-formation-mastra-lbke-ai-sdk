@@ -1,0 +1,22 @@
+services:
+  mastra:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: stackpicker-mastra
+    restart: unless-stopped
+    ports:
+      - "4111:4111"
+    env_file:
+      - .env
+    environment:
+      # Persist the SQLite DB on a named volume (see below) instead of
+      # the ephemeral container filesystem.
+      MASTRA_DB_URL: file:/app/data/mastra.db
+    volumes:
+      - mastra-data:/app/data
+    # The Mac mini Ollama (10.7.0.107) is on the same LAN as this host,
+    # so the default bridge network can reach it directly.
+
+volumes:
+  mastra-data:

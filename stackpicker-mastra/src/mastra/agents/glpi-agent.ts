@@ -1,6 +1,19 @@
 import { Agent } from '@mastra/core/agent';
+import type { ToolsInput } from '@mastra/core/agent';
 import { ollamaLocal } from '../providers/ollama-local';
 import { glpiMcp } from '../mcp/glpi';
+
+// Load MCP tools defensively: never let a missing config or a failed
+// stdio spawn crash the server at boot. If the client is disabled or the
+// connection fails, the agent simply starts with no tools.
+let glpiTools: ToolsInput = {};
+if (glpiMcp) {
+  try {
+    glpiTools = await glpiMcp.listTools();
+  } catch (error) {
+    console.warn('[glpi-agent] Could not load GLPI MCP tools:', error);
+  }
+}
 
 export const glpiAgent = new Agent({
   id: 'glpi-agent',
@@ -22,5 +35,5 @@ Comportement attendu :
 
 Tu ne réponds qu'aux questions liées à GLPI (tickets, utilisateurs, suivi support).`,
   model: ollamaLocal('qwen3.6:latest'),
-  tools: await glpiMcp.listTools(),
+  tools: glpiTools,
 });
