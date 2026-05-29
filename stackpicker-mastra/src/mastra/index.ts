@@ -9,6 +9,7 @@ import { LangfuseExporter } from '@mastra/langfuse';
 import { weatherWorkflow } from './workflows/weather-workflow';
 import { echoWorkflow } from './workflows/echo-workflow';
 import { advancedWorkflow } from './workflows/advanced-workflow';
+import { docIngestionWorkflow } from './workflows/doc-ingestion-workflow';
 import { weatherAgent } from './agents/weather-agent';
 import { stackpickerAgent } from './agents/stackpicker-agent';
 import { summarizerAgent } from './agents/summarizer-agent';
@@ -17,7 +18,7 @@ import { paidUserMiddleware } from './middlewares/paid-user';
 import { toolCallAppropriatenessScorer, completenessScorer, translationScorer } from './scorers/weather-scorer';
 
 export const mastra = new Mastra({
-  workflows: { weatherWorkflow, echoWorkflow, advancedWorkflow },
+  workflows: { weatherWorkflow, echoWorkflow, advancedWorkflow, docIngestionWorkflow },
   agents: { weatherAgent, stackpickerAgent, summarizerAgent, glpiAgent },
   scorers: { toolCallAppropriatenessScorer, completenessScorer, translationScorer },
   server: {

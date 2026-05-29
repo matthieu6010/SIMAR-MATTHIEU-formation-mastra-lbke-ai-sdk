@@ -17,6 +17,7 @@
     "node": ">=22.13.0"
   },
   "dependencies": {
+    "@chroma-core/default-embed": "^0.1.9",
     "@mastra/core": "^1.37.1",
     "@mastra/duckdb": "^1.4.0",
     "@mastra/evals": "^1.2.3",
@@ -28,12 +29,18 @@
     "@mastra/observability": "^1.14.0",
     "@mastra/rag": "^2.2.1",
     "@mastra/tavily": "^1.0.1",
+    "@openrouter/ai-sdk-provider": "^1.5.4",
     "ai": "^5.0.192",
+    "cheerio": "^1.2.0",
+    "chromadb": "^3.4.3",
+    "nanoid": "^5.1.11",
     "sqlite3": "^6.0.1",
+    "turndown": "^7.2.4",
     "zod": "^4.4.3"
   },
   "devDependencies": {
     "@types/node": "^25.9.1",
+    "@types/turndown": "^5.0.6",
     "mastra": "^1.10.2",
     "typescript": "^6.0.3"
   }

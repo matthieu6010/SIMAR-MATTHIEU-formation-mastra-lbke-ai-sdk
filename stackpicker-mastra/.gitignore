@@ -9,5 +9,6 @@ dist
 *.db-*
 *.duckdb
 *.duckdb.wal
+chroma-data
 .netlify
 .vercel
